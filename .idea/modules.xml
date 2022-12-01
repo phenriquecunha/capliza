@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/capliza.iml" filepath="$PROJECT_DIR$/.idea/capliza.iml" />
+      <module fileurl="file://$PROJECT_DIR$/capliza/capliza.iml" filepath="$PROJECT_DIR$/capliza/capliza.iml" />
     </modules>
   </component>
 </project>
