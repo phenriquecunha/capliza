@@ -9,5 +9,4 @@ public class CaplizaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CaplizaApplication.class, args);
 	}
-
 }
