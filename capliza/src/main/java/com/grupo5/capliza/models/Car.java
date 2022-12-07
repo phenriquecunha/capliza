@@ -3,6 +3,7 @@ package com.grupo5.capliza.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.Instant;
 
 @Entity
 @Table(name = "tb_car")
@@ -24,5 +25,10 @@ public class Car {
   String year;
   @Column(nullable = false)
   Double price;
+
+  @Column(nullable = false)
+  Instant createdAt;
+  @Column
+  Instant updatedAt;
 
 }

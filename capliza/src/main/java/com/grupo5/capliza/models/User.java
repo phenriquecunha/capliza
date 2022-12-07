@@ -3,6 +3,7 @@ package com.grupo5.capliza.models;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -25,6 +26,11 @@ public class User{
   String email;
   @Column(nullable = false)
   String phone;
+
+  @Column(nullable = false)
+  Instant createdAt;
+  @Column
+  Instant updatedAt;
 
   @ManyToMany
   List<Address> addresses;

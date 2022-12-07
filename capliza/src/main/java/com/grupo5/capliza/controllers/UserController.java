@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class UserController {
     user.setEmail(userDto.getEmail());
     user.setPhone(userDto.getPhone());
     user.setPassword(userDto.getPassword());
+    user.setCreatedAt(Instant.now());
 
     for (Address item :  list) {
       if (item.getNumber().equals(userDto.getAddress().getNumber())) {
@@ -99,6 +101,7 @@ public class UserController {
     user.get().setEmail(userDto.getEmail());
     user.get().setPhone(userDto.getPhone());
     user.get().setPassword(userDto.getPassword());
+    user.get().setUpdatedAt(Instant.now());
     addresses.add(address);
     user.get().setAddresses(addresses);
     return ResponseEntity.ok().body(userRepository.save(user.get()));

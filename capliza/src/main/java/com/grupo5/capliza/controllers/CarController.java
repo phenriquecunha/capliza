@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Map;
 
 @RestController
@@ -49,6 +50,7 @@ public class CarController {
     carDto.setModel(carDto.getModel().toLowerCase());
     carDto.setType(carDto.getType().toLowerCase());
     BeanUtils.copyProperties(carDto,car);
+    car.setCreatedAt(Instant.now());
     return ResponseEntity.status(HttpStatus.CREATED).body(carRepository.save(car));
   }
 
@@ -70,7 +72,7 @@ public class CarController {
     }
 
     car.get().setPrice(body.get("price"));
-
+    car.get().setUpdatedAt(Instant.now());
     return ResponseEntity.ok().body(carRepository.save(car.get()));
   }
 

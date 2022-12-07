@@ -3,7 +3,8 @@ package com.grupo5.capliza.models;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "tb_rent")
@@ -18,9 +19,17 @@ public class Rent {
   @ManyToOne
   Car car;
   @Column(nullable = false)
-  LocalDateTime checkin;
-  @Column(nullable = false)
-  LocalDateTime checkout;
-  @Column(nullable = false)
   Double total_price;
+
+  @Column(nullable = false)
+  Instant checkin;
+  @Column
+  Instant checkout;
+  @Column(nullable = false)
+  Instant expectedCheckout;
+
+  @Column(nullable = false)
+  Instant createdAt;
+  @Column
+  Instant updatedAt;
 }
