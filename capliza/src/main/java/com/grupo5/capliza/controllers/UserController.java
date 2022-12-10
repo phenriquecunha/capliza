@@ -36,7 +36,7 @@ public class UserController {
     if(user.isEmpty()){
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário com id '"+id+"' não encontrado");
     }
-    return ResponseEntity.ok().body(user.get());
+    return ResponseEntity.ok(user.get());
   }
 
   @PostMapping
@@ -104,7 +104,7 @@ public class UserController {
     user.get().setUpdatedAt(Instant.now());
     addresses.add(address);
     user.get().setAddresses(addresses);
-    return ResponseEntity.ok().body(userRepository.save(user.get()));
+    return ResponseEntity.ok(userRepository.save(user.get()));
   }
 
   @DeleteMapping("/{id}")
@@ -114,6 +114,6 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário com id '"+id+"' não encontrado");
     }
     userRepository.delete(user.get());
-    return ResponseEntity.ok().body("Usuário com id '"+id+"' deletado com sucesso!");
+    return ResponseEntity.ok("Usuário com id '"+id+"' deletado com sucesso!");
   }
 }

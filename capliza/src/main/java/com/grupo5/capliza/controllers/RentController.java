@@ -24,6 +24,6 @@ public class RentController {
 
   @PostMapping
   public ResponseEntity<Object> rentACar(@RequestBody RentDto rentDto){
-    return ResponseEntity.ok().body(rentService.rent(rentDto));
+    return ResponseEntity.ok(rentService.rent(rentDto));
   }
 }

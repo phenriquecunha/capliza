@@ -24,14 +24,13 @@ public class CarController {
   public ResponseEntity<Object> getCars(@RequestBody @Nullable Map<String, Double> params){
     var cars = carRepository.findAll();
     if(params == null){
-      return ResponseEntity.ok().body(cars);
+      return ResponseEntity.ok(cars);
     }
-    return ResponseEntity.ok().body(
+    return ResponseEntity.ok(
         cars.stream()
             .filter(car -> car.getPrice() <= params.get("max") && car.getPrice() >= params.get("min"))
             .toList()
     );
-
   }
 
   @GetMapping("{id}")
@@ -40,7 +39,7 @@ public class CarController {
     if(car.isEmpty()){
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carro com id '"+id+"' não encontrado");
     }
-    return ResponseEntity.ok().body(car.get());
+    return ResponseEntity.ok(car.get());
   }
 
   @PostMapping
@@ -61,7 +60,7 @@ public class CarController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carro com id '"+id+"' não encontrado");
     }
     carRepository.delete(car.get());
-    return ResponseEntity.ok().body("Carro com id '"+id+"' deletado com sucesso!");
+    return ResponseEntity.ok("Carro com id '"+id+"' deletado com sucesso!");
   }
 
   @PutMapping("{id}")
@@ -73,19 +72,19 @@ public class CarController {
 
     car.get().setPrice(body.get("price"));
     car.get().setUpdatedAt(Instant.now());
-    return ResponseEntity.ok().body(carRepository.save(car.get()));
+    return ResponseEntity.ok(carRepository.save(car.get()));
   }
 
   @GetMapping("type/{type}")
   public ResponseEntity<Object> getCarsByType(@PathVariable String type){
     type = type.toLowerCase();
-    return ResponseEntity.ok().body(carRepository.findAllByType(type));
+    return ResponseEntity.ok(carRepository.findAllByType(type));
   }
 
   @GetMapping("brand/{brand}")
   public ResponseEntity<Object> getCarsByModel(@PathVariable String brand){
     brand = brand.toLowerCase();
-    return ResponseEntity.ok().body(carRepository.findAllByBrand(brand));
+    return ResponseEntity.ok(carRepository.findAllByBrand(brand));
   }
 
 }
