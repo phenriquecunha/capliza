@@ -3,6 +3,7 @@ package com.grupo5.capliza.controllers;
 import com.grupo5.capliza.dtos.CarDto;
 import com.grupo5.capliza.models.Car;
 import com.grupo5.capliza.repositories.CarRepository;
+import com.grupo5.capliza.services.CarService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ public class CarController {
   @Autowired
   CarRepository carRepository;
 
+  @Autowired
+  CarService carService;
   @GetMapping
   public ResponseEntity<Object> getCars(@RequestBody @Nullable Map<String, Double> params){
     var cars = carRepository.findAll();
@@ -85,6 +88,16 @@ public class CarController {
   public ResponseEntity<Object> getCarsByModel(@PathVariable String brand){
     brand = brand.toLowerCase();
     return ResponseEntity.ok(carRepository.findAllByBrand(brand));
+  }
+
+  @GetMapping("/rented")
+  public ResponseEntity<Object> getRentedCars(){
+    return ResponseEntity.ok(carService.rentedCars());
+  }
+
+  @GetMapping("/available")
+  public ResponseEntity<Object> getAvailableCars(){
+    return ResponseEntity.ok(carService.availableCars());
   }
 
 }
