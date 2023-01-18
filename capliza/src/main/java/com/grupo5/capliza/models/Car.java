@@ -1,9 +1,15 @@
 package com.grupo5.capliza.models;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "tb_car")
@@ -24,7 +30,7 @@ public class Car {
   @Column(nullable = false)
   String year;
   @Column(nullable = false)
-  Double price;
+  BigDecimal price;
 
   @Column(nullable = false)
   Instant createdAt;

@@ -1,22 +1,24 @@
 package com.grupo5.capliza.services;
 
-import com.grupo5.capliza.dtos.RentCheckoutDto;
-import com.grupo5.capliza.dtos.RentDto;
-import com.grupo5.capliza.models.Rent;
-import com.grupo5.capliza.repositories.CarRepository;
-import com.grupo5.capliza.repositories.RentRepository;
-import com.grupo5.capliza.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.grupo5.capliza.dtos.RentCheckoutDto;
+import com.grupo5.capliza.dtos.RentDto;
+import com.grupo5.capliza.models.Rent;
+import com.grupo5.capliza.repositories.CarRepository;
+import com.grupo5.capliza.repositories.RentRepository;
+import com.grupo5.capliza.repositories.UserRepository;
 
 @Service
 public class RentService {
@@ -57,9 +59,10 @@ public class RentService {
     }
     rent.setUser(user.get());
 
-    Double price = car.get().getPrice();
+    BigDecimal price = car.get().getPrice();
     Long days = Duration.between(rent.getCheckin(), rent.getExpectedCheckout()).toDays();
-    Double totalPrice = price * days;
+    BigDecimal daysBig = new BigDecimal(days);
+    BigDecimal totalPrice = price.multiply(daysBig);
 
     rent.setTotal_price(totalPrice);
     rent.setCreatedAt(Instant.now());
@@ -74,12 +77,14 @@ public class RentService {
     var checkout = Instant.parse(rentDto.getCheckout()).atZone(ZoneId.of("-3")).toInstant();
 
     if(rent.isEmpty()){
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Registro de locação com id '"+rentDto.getId()+"' não encontrado");
+    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Registro de locação com id '"+rentDto.getId()+"' não encontrado");
     }
     long days = Duration.between(rent.get().getExpectedCheckout(), checkout).toDays();
     if(days > 0){
-      var addPrice = (rent.get().getCar().getPrice() * days) * 1.05;
-      rent.get().setTotal_price(rent.get().getTotal_price() + addPrice);
+    	BigDecimal daysBig = new BigDecimal(days);
+    	BigDecimal tax = new BigDecimal(1.05);
+    	BigDecimal addPrice = (rent.get().getCar().getPrice().multiply(daysBig)).multiply(tax);
+    	rent.get().setTotal_price(rent.get().getTotal_price().add(addPrice) );
     }
     rent.get().setCheckout(checkout);
     rent.get().setUpdatedAt(Instant.now());

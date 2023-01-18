@@ -1,18 +1,27 @@
 package com.grupo5.capliza.controllers;
 
-import com.grupo5.capliza.dtos.CarDto;
-import com.grupo5.capliza.models.Car;
-import com.grupo5.capliza.repositories.CarRepository;
-import com.grupo5.capliza.services.CarService;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.util.Map;
+import com.grupo5.capliza.dtos.CarDto;
+import com.grupo5.capliza.models.Car;
+import com.grupo5.capliza.repositories.CarRepository;
+import com.grupo5.capliza.services.CarService;
 
 @RestController
 @RequestMapping("/car")
@@ -31,7 +40,7 @@ public class CarController {
     }
     return ResponseEntity.ok(
         cars.stream()
-            .filter(car -> car.getPrice() <= params.get("max") && car.getPrice() >= params.get("min"))
+            .filter(car -> car.getPrice().doubleValue() <= params.get("max") && car.getPrice().doubleValue() >= params.get("min"))
             .toList()
     );
   }
@@ -73,7 +82,7 @@ public class CarController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carro com id '"+id+"' não encontrado");
     }
 
-    car.get().setPrice(body.get("price"));
+    car.get().setPrice(new BigDecimal(body.get("price")));
     car.get().setUpdatedAt(Instant.now());
     return ResponseEntity.ok(carRepository.save(car.get()));
   }

@@ -1,10 +1,16 @@
 package com.grupo5.capliza.models;
 
-import lombok.Data;
-
-import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.ZonedDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "tb_rent")
@@ -19,7 +25,7 @@ public class Rent {
   @ManyToOne
   Car car;
   @Column(nullable = false)
-  Double total_price;
+  BigDecimal total_price;
 
   @Column(nullable = false)
   Instant checkin;
